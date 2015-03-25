@@ -34,6 +34,7 @@
 
 Lexer::Lexer()
 {
+
 	m_motCle = boost::regex("var|const|lire|ecrire");
 	m_symbole = boost::regex("-|\\+|/|\\*|,|;|\\(|\\)|=|:=");
 	m_nb = boost::regex("[0-9]+");

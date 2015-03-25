@@ -14,6 +14,7 @@ class Nombre : public Facteur
 		int getValeur(){return m_valeur;}
 		virtual int calculer(Automate *automate){return m_valeur;}
 		virtual int* evaluer(Automate *automate){ return new int(m_valeur); }
+		virtual void remplirIdsExpression(vector<string> &ids){}
 	protected:
 	private:
 		int m_valeur;

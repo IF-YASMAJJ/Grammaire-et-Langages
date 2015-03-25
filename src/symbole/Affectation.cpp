@@ -15,7 +15,7 @@ Affectation::~Affectation()
 
 Affectation::operator std::string() const
 {
-	stringstream ss; 
+	stringstream ss;
 	string tmp;
 	if (m_expression != NULL)
 	{

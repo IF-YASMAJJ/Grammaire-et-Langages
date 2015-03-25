@@ -55,9 +55,15 @@ class Automate
 		/**
 		 * Vérifie les indicateurs pour une expression en vue d'une utilisation de celle-ci.
 		 **/
-		bool verifierIdentificateurs(vector<string> identificateurs);
+		bool verifierIdentificateurs(vector<string> identificateurs, vector<SymboleTable*> &listeSymboles);
 		SymboleTable *creerDeclaration();
-		void majFlagsPartieDroite(vector<string> identificateurs);
+		void majFlagsPartieDroite(vector<SymboleTable*> &listeSymboles);
+		/**
+		 * Parcourt la table des symboles à la recherche de :
+		 *		-variables non déclarées
+		 *		-variables non affectées (ni utilisées)
+		 */
+		void verifierTable();
 };
 
 #endif // AUTOMATE_H

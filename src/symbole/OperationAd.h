@@ -13,7 +13,7 @@ class OperationAd : public Expression
 		virtual ~OperationAd();
 		virtual operator std::string() const;
 		void initialiser(Symbole **liste, int taille);
-		virtual void remplirIdsExpression(vector<string> ids);
+		virtual void remplirIdsExpression(vector<string> &ids);
 		virtual int calculer(Automate *automate);
 		virtual int* evaluer(Automate *automate);
 

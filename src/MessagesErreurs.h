@@ -2,6 +2,7 @@
 #define MESSAGESERREURS_H
 
 #include <string>
+#include <queue>
 #include <iostream>
 using namespace std;
 
@@ -38,54 +39,66 @@ class MessagesErreurs
 		}
 
 		static void IdentificateurNonDeclare(){
-			cerr << "Identificateur requis";
+			m_FileMessages.push("Identificateur requis");
 		}
 
 		static void DoubleDeclaration(string nomVariable){
-			cerr << "la variable " << nomVariable << " est deja declaree";
+			m_FileMessages.push("la variable " + nomVariable + " est deja declaree");
 		}
 
 		static void ConstanteNonModifiable(string nomVariable){
-			cerr << "la variable " << nomVariable << " est deja declaree";
+			m_FileMessages.push("la variable " + nomVariable + " est une constante.");
 		}
 
 		static void ASValeurInconnue(string expression){
-			cerr << "une valeur dans l'" << expression
-					<< " n'est pas connue.";
+			m_FileMessages.push("une valeur dans l'expression " + expression + " n'est pas connue.");
 		}
 
 		static void ASVariableNonAffectee(string nomVariable){
-			cerr <<"variable non affectee : " << nomVariable
-					<< "variable non utilisee : " << nomVariable;
+			m_FileMessages.push("variable non affectee : " + nomVariable);
+		}
+
+		static void ASVariableNonUtilisee(string nomVariable){
+			m_FileMessages.push("variable non utilisee : " + nomVariable);
 		}
 
 		static void ASVariableNonDeclaree(string nomVariable){
-			cerr << "la variable " << nomVariable << " n'a pas ete declaree.";
+			m_FileMessages.push("la variable " + nomVariable + " n'a pas ete declaree.");
 		}
 
 		static void ErreurLexicale(int ligne, int colonne){
-			cerr <<"Erreur lexicale (" << std::to_string(ligne) << ":" << std::to_string(colonne) << ") caractere _";
+			m_FileMessages.push("Erreur lexicale (" + std::to_string(ligne) + ":" + std::to_string(colonne) + ") caractere _");
 		}
 
 		static void ErreurLexicale(int ligne, int colonne, int nature){
 			switch(nature){
 			case ATTENDU_VIRGPOINTVIRG:
-				cerr << "Erreur syntaxique (" << std::to_string(ligne) << ":" << std::to_string(colonne) << ") symbole , ou ; attendu";
+				m_FileMessages.push("Erreur syntaxique (" + std::to_string(ligne) + ":" + std::to_string(colonne) + ") symbole , ou ; attendu");
 				return;
 			case ATTENDU_EGAL:
-				cerr << "Erreur syntaxique (" << std::to_string(ligne) << ":" << std::to_string(colonne) << ") symbole = attendu";
+				m_FileMessages.push("Erreur syntaxique (" + std::to_string(ligne) + ":" + std::to_string(colonne) + ") symbole = attendu");
 				return;
 			case ATTENDU_VALEUR:
-				cerr << "Erreur syntaxique (" << std::to_string(ligne) << ":" << std::to_string(colonne) << ") valeur attendue";
+				m_FileMessages.push("Erreur syntaxique (" + std::to_string(ligne) + ":" + std::to_string(colonne) + ") valeur attendue");
 				return;
 			case ATTENDU_OPERATEUR:
-				cerr << "Erreur syntaxique (" << std::to_string(ligne) << ":" << std::to_string(colonne) << ") operateur := attendu";
+				m_FileMessages.push("Erreur syntaxique (" + std::to_string(ligne) + ":" + std::to_string(colonne) + ") operateur := attendu");
 				return;
 			}
 		}
 
+		static void EcrireMessages(){
+			while(!m_FileMessages.empty()){
+				cout << m_FileMessages.front() << endl;
+				m_FileMessages.pop();
+			}
+		}
 	protected:
 	private:
+		/**
+		 * Ne contient que les messages émanant de l'analyse statique.
+		 */
+		static queue<string> m_FileMessages;
 };
 
 #endif // MESSAGESERREURS_H

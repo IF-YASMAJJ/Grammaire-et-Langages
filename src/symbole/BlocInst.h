@@ -5,6 +5,8 @@
 #include "Symbole.h"
 #include "LigneInstruction.h"
 
+#include <iostream>
+using namespace std;
 class BlocInst : public Symbole
 {
 	public:
@@ -14,6 +16,7 @@ class BlocInst : public Symbole
 		virtual operator std::string() const;
 		void initialiser(Symbole **, int taille);
 		virtual void interpreter(Automate *automate);
+		LigneInstruction *demanderLigneInstruction() const {return m_currentLine;}
 	protected:
 	private:
 		BlocInst * m_prevInst;

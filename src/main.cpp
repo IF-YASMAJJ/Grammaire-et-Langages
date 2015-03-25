@@ -7,10 +7,10 @@
 
 using namespace std;
 
+queue<string> MessagesErreurs::m_FileMessages;
+
 int main(int argc, const char * argv[])
 {
-
-
 
 
 	//-----------------------------------------------------------------------------

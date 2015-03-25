@@ -54,7 +54,7 @@ void OperationMul::initialiser(Symbole **liste, int taille)
 	}
 }
 
-void OperationMul::remplirIdsExpression(vector<string> ids){
+void OperationMul::remplirIdsExpression(vector<string> &ids){
 	m_terme->remplirIdsExpression(ids);
 	m_facteur->remplirIdsExpression(ids);
 }
@@ -68,7 +68,7 @@ int  OperationMul::calculer(Automate *automate){
 	{
 		return m_terme->calculer(automate) / m_facteur->calculer(automate);
 	}
-	
+
 }
 
 int* OperationMul::evaluer(Automate *automate) {

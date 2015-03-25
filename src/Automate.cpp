@@ -7,6 +7,7 @@
 #include "symbole/LigneConst.h"
 #include "symbole/Affectation.h"
 #include "symbole/Ecriture.h"
+#include "symbole/BlocInst.h"
 #include "MessagesErreurs.h"
 
 #include <vector>
@@ -33,6 +34,7 @@ void Automate::lecture()
 	{
 		m_pileEtats.top()->transition(this);
 	}
+	verifierTable();
 }
 
 void Automate::decalage(Symbole *s, Etat *e){
@@ -116,7 +118,8 @@ void Automate::majTableSymboles(Symbole *s)
 		}
 		//Ajout de la déclaration dans la table.
 		SymboleTable *st = creerDeclaration();
-        m_aSymboles[idTable] = st;
+//        m_aSymboles[idTable] = st;
+		m_aSymboles.insert(pair<string,SymboleTable*>(idTable,st));
 	}
 	else if(typeS == LIGNECONST)
 	{
@@ -126,87 +129,112 @@ void Automate::majTableSymboles(Symbole *s)
 		}
 		//Ajout de la définition de constante la table.
         SymboleTable *st = ((LigneConst*)s)->construireSymboleTable();
-        m_aSymboles[idTable] = st;
+        m_aSymboles.insert(pair<string,SymboleTable*>(idTable,st));
 	}
-	else if(typeS == AFFECTATION)
-	{
-        /*
-         * TODO :
-         * 	(DONE) au moins une variable partie droite de affectation non affectée (chercher dans la table)
-         *	(DONE) variable partie gauche est une constante
-         * 	(DONE) une des deux variables n'a pas été déclarée
-         */
-         if(symbole == NULL){
-			MessagesErreurs::ASVariableNonDeclaree(idTable);
+	else if(typeS == BLOCINSTRUCTION){
+		//
+		BlocInst *bInstr = (BlocInst *)s;
+		LigneInstruction *lInstr = bInstr->demanderLigneInstruction();
+		if(lInstr==NULL)	return;
 
-			SymboleTable *nSymb = creerDeclaration();
-			nSymb->m_declaree = false;
-			m_aSymboles[idTable] = nSymb;
-			return;
-         }
-         if(symbole->m_constante){
-			MessagesErreurs::ConstanteNonModifiable(idTable);
-			return;
-         }
-
-         Affectation *aff = (Affectation*)s;
-         vector<string> identificateurs;
-         aff->remplirIdsExpression(identificateurs);
-
-         if(!verifierIdentificateurs(identificateurs)) return;
+		idTable = lInstr->demanderId();
+		symbole = chercherSymbole(idTable);
 
 
-         //Si on arrive ici, alors l'affectation peut avoir lieu.
-         //TODO : comment on calcule la valeur d'une expression ?
+		const int typeAff = (int)*lInstr;
+		if(typeAff == AFFECTATION)
+		{
+			/*
+			 * TODO :
+			 * 	(DONE) au moins une variable partie droite de affectation non affectée (chercher dans la table)
+			 *	(DONE) variable partie gauche est une constante
+			 * 	(DONE) une des deux variables n'a pas été déclarée
+			 */
+			 bool calcul = true;
+			 if(symbole == NULL){
+				MessagesErreurs::ASVariableNonDeclaree(idTable);
+
+				symbole = creerDeclaration();
+				symbole->m_declaree = false;
+				m_aSymboles.insert(pair<string,SymboleTable*>(idTable,symbole));
+				calcul = false;
+			 }
+			 else if(symbole->m_constante){
+				MessagesErreurs::ConstanteNonModifiable(idTable);
+				calcul = false;
+			 }
+
+			 Affectation *aff = (Affectation*)lInstr;
+			 vector<string> identificateurs;
+			 vector<SymboleTable*> listeSymboles;
+
+			 aff->remplirIdsExpression(identificateurs);
+			 if(!verifierIdentificateurs(identificateurs, listeSymboles)){
+				MessagesErreurs::ASValeurInconnue(aff->MessageErreur());
+				calcul = false;
+			}
+
+			if(!calcul){
+			 //Si on arrive ici, alors l'affectation peut avoir lieu.
+//			 symbole->m_valeur = aff->calculerExpression();
+			}
 
 
-		symbole->m_affectee = true;
-		symbole->m_connnue = true;
-		majFlagsPartieDroite(identificateurs);
+			if(symbole->m_declaree){
+				symbole->m_affectee = true;
+				symbole->m_connnue = true;
+			}
+			majFlagsPartieDroite(listeSymboles);
 
 
-	}
-	else if(typeS == ECRITURE)
-	{
-		/*
-		 * TODO :
-		 * 	la variable à écrire n'a pas été déclarée ou affectée.
-		 */
-		 Ecriture *ecr = (Ecriture*)s;
-         vector<string> identificateurs;
-         ecr->remplirIdsExpression(identificateurs);
-
-         if(!verifierIdentificateurs(identificateurs)) return;
-
-         majFlagsPartieDroite(identificateurs);
-	}
-	else if(typeS == LECTURE)
-	{
-		if(symbole == NULL){
-			MessagesErreurs::ASVariableNonDeclaree(idTable);
-			return;
 		}
+		else if(typeAff == ECRITURE)
+		{
+			/*
+			 * TODO :
+			 * 	la variable à écrire n'a pas été déclarée ou affectée.
+			 */
+			 Ecriture *ecr = (Ecriture*)lInstr;
+			 vector<string> identificateurs;
+			 vector<SymboleTable*> listeSymboles;
 
-		symbole->m_affectee = true;
-		symbole->m_connnue = false;
+			 ecr->remplirIdsExpression(identificateurs);
+			 if(!verifierIdentificateurs(identificateurs, listeSymboles)){
+				MessagesErreurs::ASValeurInconnue(ecr->MessageErreur());
+			}
+
+			 majFlagsPartieDroite(listeSymboles);
+		}
+		else if(typeAff == LECTURE)
+		{
+			if(symbole == NULL){
+				MessagesErreurs::ASVariableNonDeclaree(idTable);
+				return;
+			}
+
+			symbole->m_affectee = true;
+			symbole->m_connnue = false;
+		}
+		//
 	}
 }
 
-bool Automate::verifierIdentificateurs(vector<string> identificateurs){
+bool Automate::verifierIdentificateurs(vector<string> identificateurs, vector<SymboleTable*> &listeSymboles){
+	bool aRetourner = true;
 	for(unsigned i=0; i<identificateurs.size() ; i++){
-		string nomVariable = identificateurs[i];
-		ArbreSymboles::iterator it = m_aSymboles.find(nomVariable);
+		ArbreSymboles::iterator it = m_aSymboles.find(identificateurs[i]);
 
 		if(it==m_aSymboles.end()){
-			MessagesErreurs::ASVariableNonDeclaree(nomVariable);
-			return false;
+			aRetourner =  false;
 		}
-		if(!it->second->m_affectee){
-			MessagesErreurs::ASVariableNonAffectee(nomVariable);
-			return false;
+		else{
+			if(!it->second->m_affectee){
+				aRetourner = false;
+			}
+			listeSymboles.push_back(it->second);
 		}
 	}
-	return true;
+	return aRetourner;
 }
 
 
@@ -214,16 +242,34 @@ SymboleTable *Automate::creerDeclaration(){
 	return new SymboleTable(0,true,false,false,false,false);
 }
 
-void Automate::majFlagsPartieDroite(vector<string> identificateurs){
-	for(unsigned i=0; i<identificateurs.size() ; i++){
-		string nomVariable = identificateurs[i];
-		ArbreSymboles::iterator it = m_aSymboles.find(nomVariable);
-
-		it->second->m_use = true;
+void Automate::majFlagsPartieDroite(vector<SymboleTable*> &listeSymboles){
+	for(unsigned i=0; i<listeSymboles.size() ; i++){
+		listeSymboles[i]->m_use = true;
 	}
+}
+
+void Automate::verifierTable(){
+	ArbreSymboles::iterator it ;
+	SymboleTable *sTable;
+    for(it = m_aSymboles.begin() ; it!=m_aSymboles.end() ; it++){
+		sTable = it->second;
+
+		if(!sTable->m_declaree){
+			MessagesErreurs::ASVariableNonDeclaree(it->first);
+		}
+		else{
+			if(!sTable->m_affectee){
+				MessagesErreurs::ASVariableNonAffectee(it->first);
+			}
+			if(!sTable->m_use){
+				MessagesErreurs::ASVariableNonUtilisee(it->first);
+			}
+		}
+    }
 }
 
 void Automate::interpreter()
 {
 	//m_pileSymbole.top()->interpreter;
 }
+

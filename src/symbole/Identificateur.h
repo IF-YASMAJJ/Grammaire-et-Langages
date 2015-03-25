@@ -15,7 +15,7 @@ class Identificateur : public Facteur
 		virtual int calculer(Automate *automate);
 		virtual int* evaluer(Automate *automate);
 
-		virtual void remplirIdsExpression(vector<string> ids){ids.push_back(m_id);}
+		virtual void remplirIdsExpression(vector<string> &ids){ids.push_back(m_id);}
 	protected:
 	private:
 		std::string m_id;
