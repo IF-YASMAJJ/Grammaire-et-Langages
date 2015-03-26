@@ -37,17 +37,17 @@ void Automate::lecture(bool execution, bool statique, bool affichage, bool trans
 {
 
 	if(execution){
-		m_execution = execution;
+		m_execution = true;
 		m_statique = true;
 	}
 	if(transformation){
-		m_transformation = transformation;
+		m_transformation = true;
 		m_statique = true;
 	}
 
 	if(statique && !m_statique)		m_statique = true;
 
-	if(m_affichage)  affichage = true;
+	if(affichage)  m_affichage = true;
 
 	//Initialisation et lancement de l'automate.
 	m_pileEtats.push(new E00());
@@ -55,6 +55,9 @@ void Automate::lecture(bool execution, bool statique, bool affichage, bool trans
 	{
 		m_pileEtats.top()->transition(this);
 	}
+
+	//Dans tous les cas, on affiche les messages concernant les doubles déclarations
+	MessagesErreurs::EcrireMessagesDoubleDeclaration();
 
 	if(m_statique){
 		verifierTable();
@@ -64,7 +67,7 @@ void Automate::lecture(bool execution, bool statique, bool affichage, bool trans
 	if(!m_etatAnalyse)	return;
 
 	if(m_transformation){
-		//TODO : appeler fonction transformation
+		transformer();
 	}
 
 	if(m_execution){

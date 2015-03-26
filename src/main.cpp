@@ -7,7 +7,8 @@
 
 using namespace std;
 
-queue<string> MessagesErreurs::m_FileMessages;
+queue<string> MessagesErreurs::m_FileMessagesStatiques;
+queue<string> MessagesErreurs::m_FileMessagesDoubleDeclaration;
 
 int main(int argc, const char * argv[])
 {
@@ -65,7 +66,7 @@ int main(int argc, const char * argv[])
 			automate.lecture(execution, statique, affichage, transformation);
 			return EXIT_SUCCESS;
 		} else {
-			// afficher sur sortie d'erruer
+			MessagesErreurs::FichierInexistant(cheminFichier);
 			return EXIT_FAILURE;
 		}
 	}
