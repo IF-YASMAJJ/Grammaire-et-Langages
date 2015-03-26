@@ -14,6 +14,7 @@ class Identificateur : public Facteur
 		virtual operator std::string() const{ return m_id; }
 		virtual int calculer(Automate *automate);
 		virtual int* evaluer(Automate *automate);
+		virtual Expression* transformer(Automate *automate);
 
 		virtual void remplirIdsExpression(vector<string> &ids){ids.push_back(m_id);}
 	protected:

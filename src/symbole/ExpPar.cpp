@@ -1,5 +1,6 @@
 #include <sstream>
 #include "ExpPar.h"
+#include "Nombre.h"
 
 using namespace std;
 ExpPar::ExpPar()
@@ -38,4 +39,25 @@ void ExpPar::initialiser(Symbole **liste, int taille){
 		delete liste[0];
 		delete liste[2];
     }
+}
+
+Expression* ExpPar::transformer(Automate *automate)
+{
+	int* tmp = evaluer(automate);
+	if (tmp)
+	{
+		Nombre * ret = new Nombre(*tmp);
+		delete tmp;
+		return ret;
+	}
+
+	Expression* e = m_expression->transformer(automate);
+	if (e)
+	{
+		delete m_expression;
+		m_expression = e;
+	}
+
+	return NULL;
+
 }

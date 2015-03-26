@@ -1,5 +1,6 @@
 #include "Identificateur.h"
 #include "../Automate.h"
+#include "Nombre.h"
 
 Identificateur::Identificateur(std::string id) : m_id(id)
 {
@@ -18,7 +19,7 @@ int  Identificateur::calculer(Automate *automate){
 
 int* Identificateur::evaluer(Automate *automate) {
 	SymboleTable* s = automate->chercherSymbole(m_id);
-	if (s->m_connnue)
+	if (s->m_constante)
 	{
 		return new int(s->m_valeur);
 	}
@@ -28,3 +29,14 @@ int* Identificateur::evaluer(Automate *automate) {
 	}
 }
 
+Expression* Identificateur::transformer(Automate *automate) {
+	int* tmp = evaluer(automate);
+	if (tmp)
+	{
+		Nombre * ret = new Nombre(*tmp);
+		delete tmp;
+		return ret;
+	}
+	
+	return NULL;
+}

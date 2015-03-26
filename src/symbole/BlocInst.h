@@ -16,6 +16,7 @@ class BlocInst : public Symbole
 		virtual operator std::string() const;
 		void initialiser(Symbole **, int taille);
 		virtual void interpreter(Automate *automate);
+		virtual void transformer(Automate *automate);
 		LigneInstruction *demanderLigneInstruction() const {return m_currentLine;}
 	protected:
 	private:
