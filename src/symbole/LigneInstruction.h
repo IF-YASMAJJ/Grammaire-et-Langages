@@ -9,7 +9,8 @@ class LigneInstruction : public Symbole
 	public:
 		LigneInstruction();
 		virtual ~LigneInstruction();
-		virtual void interpreter(Automate *automate)=0;
+		virtual void interpreter(Automate *automate) = 0;
+		virtual void transformer(Automate *automate){}
 	protected:
 	private:
 };

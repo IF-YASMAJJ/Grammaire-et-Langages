@@ -54,3 +54,8 @@ void Programme::interpreter(Automate *automate)
 {
 	m_blocInst->interpreter(automate);
 }
+
+void Programme::transformer(Automate* automate)
+{
+	m_blocInst->transformer(automate);
+}

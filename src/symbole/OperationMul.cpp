@@ -1,5 +1,6 @@
 #include <sstream>
 #include "OperationMul.h"
+#include "Nombre.h"
 
 using namespace std;
 
@@ -96,4 +97,71 @@ int* OperationMul::evaluer(Automate *automate) {
 
 		return ret;
 	}
+}
+
+Expression * OperationMul::transformer(Automate* automate)
+{
+	//test si l'opération peut être ramenée à une constante. 
+	int * tmp = evaluer(automate);
+	if (tmp)
+	{
+		Nombre * ret = new Nombre(*tmp);
+		delete tmp;
+		return ret;
+	}
+
+	//transformation des deux membres 
+	Terme * t = (Terme*)m_terme->transformer(automate);
+	if (t)
+	{
+		delete m_terme;
+		m_terme = t;
+	}
+
+	Facteur * f = (Facteur*)m_facteur->transformer(automate);
+	if (f)
+	{
+		delete m_facteur;
+		m_facteur = f;
+	}
+
+	//gestion des éléments neutre et null
+	tmp = m_terme->evaluer(automate);
+	if (tmp)
+	{
+		if (*tmp == 0)
+		{
+			delete tmp;
+			return new Nombre(0);
+		}
+
+		if (*tmp == 1 && m_op == "*")
+		{
+			Facteur * ret = m_facteur;
+			m_facteur = NULL;
+			delete tmp;
+			return ret;
+		}
+		delete tmp;
+	}
+
+	tmp = m_facteur->evaluer(automate);
+	if (tmp)
+	{
+		if (*tmp == 0 && m_op=="*")
+		{
+			delete tmp;
+			return new Nombre(0);
+		}
+		if (*tmp == 1)
+		{
+			Terme * ret = m_terme;
+			m_terme = NULL;
+			delete tmp;
+			return ret;
+		}
+		delete tmp;
+	}
+
+	return NULL;
 }

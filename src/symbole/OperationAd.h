@@ -16,6 +16,7 @@ class OperationAd : public Expression
 		virtual void remplirIdsExpression(vector<string> &ids);
 		virtual int calculer(Automate *automate);
 		virtual int* evaluer(Automate *automate);
+		virtual Expression * transformer(Automate* automate);
 
 	protected:
 	private:

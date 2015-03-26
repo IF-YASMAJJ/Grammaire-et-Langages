@@ -1,5 +1,6 @@
 #include <sstream>
 #include "OperationAd.h"
+#include "Nombre.h"
 
 using namespace std;
 OperationAd::OperationAd()
@@ -66,9 +67,11 @@ int  OperationAd::calculer(Automate *automate){
 	}
 	else
 	{
-		return m_expression->calculer(automate) + m_terme->calculer(automate);
+		return m_expression->calculer(automate) - m_terme->calculer(automate);
 	}
 }
+
+
 int* OperationAd::evaluer(Automate *automate) {
 	int * e = m_expression->evaluer(automate);
 	int * t = m_terme->evaluer(automate);
@@ -94,4 +97,61 @@ int* OperationAd::evaluer(Automate *automate) {
 
 		return ret;
 	}
+}
+
+Expression * OperationAd::transformer(Automate* automate)
+{
+	//test si l'expression peut êrte ramené à une constante
+	int * tmp = evaluer(automate);
+	if (tmp)
+	{
+		Nombre * ret = new Nombre(*tmp);
+		delete tmp;
+		return ret;
+	}
+
+	//transformation des deux membre
+	Terme* t = (Terme*)m_terme->transformer(automate);
+	if (t)
+	{
+		delete m_terme;
+		m_terme = t;
+	}
+
+	Expression * e = m_expression->transformer(automate);
+	if (e)
+	{
+		delete m_expression;
+		m_expression = e;
+	}
+
+	//gestion de l'élément neutre;
+	tmp = m_expression->evaluer(automate);
+	if (tmp)
+	{
+		if (*tmp == 0 && m_opA == "+")
+		{
+			Terme * ret = m_terme;
+			m_terme = NULL;
+			delete tmp;
+			return ret;
+		}
+		delete tmp;
+	}
+
+	tmp = m_terme->evaluer(automate);
+	if (tmp)
+	{
+		if (*tmp == 0)
+		{
+			Expression * ret = m_expression;
+			m_expression = NULL;
+			delete tmp;
+			return ret;
+		}
+		delete tmp;
+	}
+
+	return NULL;
+
 }

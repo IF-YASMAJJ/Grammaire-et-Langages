@@ -94,6 +94,24 @@ void BlocInst::initialiser(Symbole **liste, int taille)
 
 void BlocInst::interpreter(Automate *automate)
 {
-	m_prevInst->interpreter(automate);
-	m_currentLine->interpreter(automate);
+	if (m_prevInst)
+	{
+		m_prevInst->interpreter(automate);
+	}
+	if (m_currentLine)
+	{
+		m_currentLine->interpreter(automate);
+	}
+}
+
+void BlocInst::transformer(Automate *automate)
+{
+	if (m_prevInst)
+	{
+		m_prevInst->transformer(automate);
+	}
+	if (m_currentLine)
+	{
+		m_currentLine->transformer(automate);
+	}
 }

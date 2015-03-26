@@ -9,6 +9,7 @@
 #include "symbole/Ecriture.h"
 #include "symbole/BlocInst.h"
 #include "MessagesErreurs.h"
+#include "symbole/Programme.h"
 
 #include <vector>
 using namespace std;
@@ -270,6 +271,18 @@ void Automate::verifierTable(){
 
 void Automate::interpreter()
 {
-	//m_pileSymbole.top()->interpreter;
+	Symbole* s = m_pileSymbole.top();
+	if (*s == PROGRAMME)
+	{
+		((Programme*)s)->interpreter(this);
+	}
 }
 
+void Automate::transformer()
+{
+	Symbole* s = m_pileSymbole.top();
+	if (*s == PROGRAMME)
+	{
+		((Programme*)s)->transformer(this);
+	}
+}
