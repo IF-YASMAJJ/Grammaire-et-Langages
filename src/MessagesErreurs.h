@@ -87,7 +87,7 @@ class MessagesErreurs
 			}
 		}
 
-		static void EcrireMessages(){
+		static void EcrireMessagesStatiques(){
 			while(!m_FileMessages.empty()){
 				cout << m_FileMessages.front() << endl;
 				m_FileMessages.pop();

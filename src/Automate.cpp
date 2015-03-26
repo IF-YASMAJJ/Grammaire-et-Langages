@@ -16,6 +16,11 @@ using namespace std;
 Automate::Automate()
 {
 	m_symbole = NULL;
+	m_statique = false;
+	m_affichage = false;
+	m_transformation = false;
+	m_execution = false;
+	m_etatAnalyse = true;
 }
 
 int Automate::scannerFichier(string cheminFichier)
@@ -27,14 +32,47 @@ Automate::~Automate()
 {
 }
 
-void Automate::lecture()
+void Automate::lecture(bool execution, bool statique, bool affichage, bool transformation)
 {
+
+	if(execution){
+		m_execution = execution;
+		m_statique = true;
+	}
+	if(transformation){
+		m_transformation = transformation;
+		m_statique = true;
+	}
+
+	if(statique && !m_statique)		m_statique = true;
+
+	if(m_affichage)  affichage = true;
+
+	//Initialisation et lancement de l'automate.
 	m_pileEtats.push(new E00());
 	while (!m_pileEtats.top()->isFinal())
 	{
 		m_pileEtats.top()->transition(this);
 	}
-	verifierTable();
+
+	if(m_statique){
+		verifierTable();
+		MessagesErreurs::EcrireMessagesStatiques();
+	}
+
+	if(!m_etatAnalyse)	return;
+
+	if(m_transformation){
+		//TODO : appeler fonction transformation
+	}
+
+	if(m_execution){
+		interpreter();
+	}
+
+	if(m_affichage){
+		afficherProgramme();
+	}
 }
 
 void Automate::decalage(Symbole *s, Etat *e){

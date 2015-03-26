@@ -27,33 +27,42 @@ int main(int argc, const char * argv[])
 		cheminFichier = argv[argc-1];
 
 		if (automate.scannerFichier(cheminFichier) == 0) {
-			automate.lecture();
+			bool execution = false;
+			bool statique = false;
+			bool affichage = false;
+			bool transformation = false;
 			for (int i = 1; i < argc-1; i++) {
 				string option = argv[i];
 				if (option.length() == 2 && option[0] == '-') {
 					switch (option[1]) {
-						case 'p':
-							automate.afficherProgramme();
+						case 'e':
+							// executer le programme
+							execution = true;
 							break;
 
 						case 'a':
 							// analyser le programme de maniere statique
+							statique = true;
 							break;
 
-						case 'e':
-							// executer le programme
+						case 'p':
+							//automate.afficherProgramme();
+							affichage = true;
 							break;
 
 						case 'o':
 							//optimiser les expressions et instructions
+							transformation = true;
 							break;
 
 						default:
 							break;
 					}
+				} else {
+					//TODO : on signale une mauvaise option ?
 				}
 			}
-
+			automate.lecture(execution, statique, affichage, transformation);
 			return EXIT_SUCCESS;
 		} else {
 			// afficher sur sortie d'erruer
