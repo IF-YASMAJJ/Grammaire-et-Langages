@@ -39,6 +39,8 @@ Lexer::Lexer()
 	m_symbole = boost::regex("-|\\+|/|\\*|,|;|\\(|\\)|=|:=");
 	m_nb = boost::regex("[0-9]+");
 	m_id = boost::regex("[a-zA-Z][a-zA-Z0-9]*");
+	m_numLigne = 1;
+	m_numColonne = 0;
 }
 
 Lexer::~Lexer()
@@ -121,7 +123,11 @@ Symbole * Lexer::getNext(){
 			symb = new EndOfFile();
 			break;
 		}
-		
+		m_numColonne++;
+		if(carLu == '\n')
+		{
+			m_numLigne++;
+		}
 		canBeMotCle = boost::regex_match((m_carLus+carLu).c_str(), matchMotCle, m_motCle, boost::match_default | boost::match_partial);
 		canBeSymbole = boost::regex_match((m_carLus+carLu).c_str(), matchSymbole, m_symbole, boost::match_default | boost::match_partial);
 		canBeId = boost::regex_match((m_carLus+carLu).c_str(), matchId, m_id, boost::match_default | boost::match_partial);
@@ -211,10 +217,10 @@ Symbole * Lexer::getNext(){
 							{
 								if(!isspace(carLu))
 								{
-									if(DEBUG) std::cout<<"Erreur lexicale 42 !   ("<<(m_carLus+carLu)<<")"<<std::endl;
+									std::err<<"Erreur lexicale ("+std::to_string(m_numLigne)+":"+std::to_string(m_numColonne)+") caractere "+carLu<<std::endl;
 								}else
 								 {
-									if(DEBUG) std::cout<<"SPAAAACE"<<std::endl;
+									if(DEBUG) std::cout<<"SPACE"<<std::endl;
 								 }
 							}
 						}

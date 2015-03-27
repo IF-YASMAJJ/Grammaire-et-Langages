@@ -25,6 +25,8 @@ class Lexer
 		boost::regex m_symbole;
 		boost::regex m_nb;
 		boost::regex m_id;
+		int m_numLigne;
+		int m_numColonne;
 };
 
 #endif // LEXER_H
