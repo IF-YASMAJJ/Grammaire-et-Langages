@@ -325,11 +325,11 @@ void Automate::transformer()
 	Symbole* s = m_pileSymbole.top();
 	if (*s == PROGRAMME)
 	{
-		for each (pair<string,SymboleTable*> s in m_aSymboles)
+		for (auto symbole = m_aSymboles.begin(); symbole != m_aSymboles.end(); symbole++)
 		{
-			if (!s.second->m_constante)
+			if (!symbole->second->m_constante)
 			{
-				s.second->m_connnue = false;
+				symbole->second->m_connnue = false;
 			}
 		}
 		((Programme*)s)->transformer(this);
