@@ -20,13 +20,11 @@ class Lexer
 		int scannerFichier(string cheminFichier);
 	private:
 		stringstream m_ss;
+		string m_carLus;
 		boost::regex m_motCle;
 		boost::regex m_symbole;
 		boost::regex m_nb;
 		boost::regex m_id;
-
-		unsigned int m_colonne;
-		unsigned int m_ligne;
 };
 
 #endif // LEXER_H

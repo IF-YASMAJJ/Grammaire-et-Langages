@@ -1,5 +1,6 @@
 #define DEBUG false
 
+
 #include <boost/regex.hpp>
 
 #include <stdlib.h>
@@ -29,7 +30,7 @@
 #include "symbole/Lire.h"
 #include "symbole/Ecrire.h"
 
-using namespace std;
+
 
 Lexer::Lexer()
 {
@@ -38,9 +39,6 @@ Lexer::Lexer()
 	m_symbole = boost::regex("-|\\+|/|\\*|,|;|\\(|\\)|=|:=");
 	m_nb = boost::regex("[0-9]+");
 	m_id = boost::regex("[a-zA-Z][a-zA-Z0-9]*");
-
-	m_colonne = 0;
-	m_ligne = 0;
 }
 
 Lexer::~Lexer()
@@ -82,10 +80,13 @@ Symbole * getCurrent()
 
 Symbole * Lexer::getNext(){
 
-	/* boucler sur la lecture jusqu'à la rencontre d'un espace ou saut de ligne -> symbole
+	/* boucler sur la lecture de caractere
 		*
-		* on teste si ce symbole valide une expression régulière, et on retourne le type de symbole.
-		* Il y a une hiérarchie imprtante entre expression.
+		* rechercher les expreg correspondant totalement ou partiellement aux caractères lus jusqu'a present
+		*
+		* on lit les caractères jusqu'a ce que plus aucune expreg ne corresponde.
+		* A ce moment la, si l'on avait une expreg correspondait (totalement), on enregistre le m_symbole associé.
+		* Sinon il y a une erreur.
 		*
 		* http://www.boost.org/doc/libs/1_31_0/libs/regex/doc/partial_matches.html
 		*
@@ -94,85 +95,39 @@ Symbole * Lexer::getNext(){
 	if(DEBUG) std::cout  << "Lexer::getNext()"<<std::endl;
 
 
+	m_carLus = "";
 	char carLu;
+
+	bool prevCanBeMotCle=false;
+	bool prevCanBeSymbole=false;
+	bool prevCanBeId=false;
+	bool prevCanBeNb=false;
+
 	bool canBeMotCle=false;
 	bool canBeSymbole=false;
 	bool canBeId=false;
 	bool canBeNb=false;
 
+	bool err_lexicale = false;
 	boost::cmatch matchMotCle;
 	boost::cmatch matchSymbole;
 	boost::cmatch matchId;
 	boost::cmatch matchNb;
 	Symbole * symb = NULL;
 
-	//TODO : compter les lignes et les colonnes, pour les envoyer au cas où au message
-
-//	m_ss.seekg(0,m_ss.end);
-//	int longueurFichier = m_ss.tellg();
-//	m_ss.seekg(0,m_ss.beg);
-
-	string symbLu;
-	bool lu=false;
-	while(!lu){
-		if(!m_ss.get(carLu)){
-			return new EndOfFile();
+	while (symb == NULL)
+	{
+		if (!m_ss.get(carLu) && m_carLus=="")
+		{
+			symb = new EndOfFile();
+			break;
 		}
+		err_lexicale = false;
+		canBeMotCle = boost::regex_match((m_carLus+carLu).c_str(), matchMotCle, m_motCle, boost::match_default | boost::match_partial);
+		canBeSymbole = boost::regex_match((m_carLus+carLu).c_str(), matchSymbole, m_symbole, boost::match_default | boost::match_partial);
+		canBeId = boost::regex_match((m_carLus+carLu).c_str(), matchId, m_id, boost::match_default | boost::match_partial);
+		canBeNb = boost::regex_match((m_carLus+carLu).c_str(), matchNb, m_nb, boost::match_default | boost::match_partial);
 
-		if(carLu != ' ' && carLu != '\n'){
-			symbLu.push_back(carLu);
-			m_colonne++;
-		}
-		else {
-			if(!symbLu.empty())		lu=true;
-
-			if(carLu == '\n'){
-				m_colonne = 0;
-				m_ligne++;
-			}else{
-				m_colonne++;
-			}
-		}
-	}
-
-	//Teste des matchings sur symbLu
-	canBeMotCle = boost::regex_match((symbLu).c_str(), matchMotCle, m_motCle, boost::match_default | boost::match_partial);
-	canBeSymbole = boost::regex_match((symbLu).c_str(), matchSymbole, m_symbole, boost::match_default | boost::match_partial);
-	canBeId = boost::regex_match((symbLu).c_str(), matchId, m_id, boost::match_default | boost::match_partial);
-	canBeNb = boost::regex_match((symbLu).c_str(), matchNb, m_nb, boost::match_default | boost::match_partial);
-
-
-	if(canBeMotCle){
-		if(symbLu == "var")			return new Var();
-		if(symbLu == "const")		return new Const();
-		if(symbLu == "lire")		return new Lire();
-		if(symbLu == "ecrire")		return new Ecrire();
-	}
-	else if(canBeSymbole){
-		if(symbLu == "-")			return new Moins();
-		if(symbLu == "+")			return new Plus();
-		if(symbLu == "/")			return new Div();
-		if(symbLu == "*")			return new Mult();
-		if(symbLu == ",")			return new Virgule();
-		if(symbLu == ";")			return new PointVirgule();
-		if(symbLu == "(")			return new ParOuvrante();
-		if(symbLu == ")")			return new ParFermante();
-		if(symbLu == "=")			return new Egal();
-		if(symbLu == ":=")			return new DeuxPointsEgal();
-	}
-	else if(canBeId){
-		return new Identificateur(symbLu);
-	}
-	else if(canBeNb){
-		return new Nombre(stoi(symbLu));
-	}
-	else {
-		//Erreur lexicale
-		return NULL;
-	}
-}
-////
-/*
 		if(!canBeMotCle && !canBeSymbole && !canBeId && !canBeNb)
 		{
 			// pas de correspondance, regarder les match précédent
@@ -326,13 +281,12 @@ Symbole * Lexer::getNext(){
 		}
 
 
-//	}
+	}
 
 
 
 	return symb;
-*/
-////
+}
 
 
 

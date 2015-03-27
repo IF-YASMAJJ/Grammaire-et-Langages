@@ -66,11 +66,11 @@ class MessagesErreurs
 			m_FileMessagesStatiques.push("la variable " + nomVariable + " n'a pas ete declaree.");
 		}
 
-		static void ErreurLexicale(int ligne, int colonne){
-			m_FileMessagesStatiques.push("Erreur lexicale (" + std::to_string(ligne) + ":" + std::to_string(colonne) + ") caractere _");
+		static void ErreurLexicale(int ligne, int colonne, string caractere){
+			cerr << "Erreur lexicale (" << std::to_string(ligne) << ":" << std::to_string(colonne) << ") caractere _";
 		}
 
-		static void ErreurLexicale(int ligne, int colonne, int nature){
+		static void ErreurSyntaxique(int ligne, int colonne, int nature){
 			switch(nature){
 			case ATTENDU_VIRGPOINTVIRG:
 				m_FileMessagesStatiques.push("Erreur syntaxique (" + std::to_string(ligne) + ":" + std::to_string(colonne) + ") symbole , ou ; attendu");

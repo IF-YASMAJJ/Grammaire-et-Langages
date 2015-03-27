@@ -22,7 +22,7 @@ void E33::transition(Automate* automate)
         automate->decalage(s, new E35());
         break;
     default:
-		MessagesErreurs::ErreurLexicale(0, 0, ATTENDU_VIRGPOINTVIRG);
+		MessagesErreurs::ErreurSyntaxique(0, 0, ATTENDU_VIRGPOINTVIRG);
         break;
 	}
 }

@@ -18,7 +18,7 @@ void E38::transition(Automate* automate)
         automate->decalage(s, new E39());
         break;
 	default:
-		MessagesErreurs::ErreurLexicale(0, 0, ATTENDU_EGAL);
+		MessagesErreurs::ErreurSyntaxique(0, 0, ATTENDU_EGAL);
         break;
 	}
 }
