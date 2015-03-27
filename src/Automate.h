@@ -43,6 +43,7 @@ class Automate
 		void afficherProgramme();
 		//void analyseStatic();
 		void interpreter();
+		void transformer();
 
     protected:
         stack <Symbole*> m_pileSymbole;

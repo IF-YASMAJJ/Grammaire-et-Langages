@@ -17,6 +17,7 @@ class Ecriture : public LigneInstruction
 		void determinerExpr(Expression *exp){m_expression=exp;}
 		void remplirIdsExpression(vector<string> &ids){m_expression->remplirIdsExpression(ids);}
 		virtual void interpreter(Automate *automate);
+		virtual void transformer(Automate *automate);
 		string MessageErreur() const {return (string)*m_expression;}
 	protected:
 	private:

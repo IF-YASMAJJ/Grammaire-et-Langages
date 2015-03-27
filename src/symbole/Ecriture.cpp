@@ -34,5 +34,15 @@ Ecriture::operator std::string() const
 
 void Ecriture::interpreter(Automate *automate)
 {
-	cout << m_expression->calculer(automate);
+	cout << m_expression->calculer(automate)<<endl;
+}
+
+void Ecriture::transformer(Automate* automate)
+{
+	Expression *tmp = m_expression->transformer(automate);
+	if (tmp)
+	{
+		delete m_expression;
+		m_expression = tmp;
+	}
 }

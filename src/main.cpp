@@ -41,11 +41,11 @@ int main(int argc, const char * argv[])
 							break;
 
 						case 'e':
-							// executer le programme
+							automate.interpreter();
 							break;
 
 						case 'o':
-							//optimiser les expressions et instructions
+							automate.transformer();
 							break;
 
 						default:

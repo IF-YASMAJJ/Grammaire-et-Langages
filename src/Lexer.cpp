@@ -110,6 +110,7 @@ Symbole * Lexer::getNext(){
 	bool canBeId=false;
 	bool canBeNb=false;
 	
+	bool err_lexicale = false;
 	boost::cmatch matchMotCle;
 	boost::cmatch matchSymbole;
 	boost::cmatch matchId;
@@ -128,6 +129,7 @@ Symbole * Lexer::getNext(){
 		{
 			m_numLigne++;
 		}
+		err_lexicale = false;
 		canBeMotCle = boost::regex_match((m_carLus+carLu).c_str(), matchMotCle, m_motCle, boost::match_default | boost::match_partial);
 		canBeSymbole = boost::regex_match((m_carLus+carLu).c_str(), matchSymbole, m_symbole, boost::match_default | boost::match_partial);
 		canBeId = boost::regex_match((m_carLus+carLu).c_str(), matchId, m_id, boost::match_default | boost::match_partial);
@@ -217,7 +219,8 @@ Symbole * Lexer::getNext(){
 							{
 								if(!isspace(carLu))
 								{
-									std::err<<"Erreur lexicale ("+std::to_string(m_numLigne)+":"+std::to_string(m_numColonne)+") caractere "+carLu<<std::endl;
+									err_lexicale = true;
+									std::cerr<<"Erreur lexicale ("+std::to_string(m_numLigne)+":"+std::to_string(m_numColonne)+") caractere "+carLu<<std::endl;			
 								}else
 								 {
 									if(DEBUG) std::cout<<"SPACE"<<std::endl;
@@ -226,18 +229,42 @@ Symbole * Lexer::getNext(){
 						}
 				}
 			}
-			prevCanBeMotCle=false;
-			prevCanBeSymbole=false;
-			prevCanBeId=false;
-			prevCanBeNb=false;
-			if(!isspace(carLu))
+			if(err_lexicale)
 			{
-				m_carLus = "";
-				m_ss.unget();
+				//erreur lexicale detectée 
+				//on continue la recherche, on ignore le dernier caractère lu
+				if(canBeMotCle)
+				{
+					prevCanBeMotCle = matchMotCle[0].matched;
+				}
+				if(canBeSymbole)
+				{
+					prevCanBeSymbole = matchSymbole[0].matched;
+				}
+				if(canBeId)
+				{
+					prevCanBeId = matchId[0].matched;
+				}
+				if(canBeNb)
+				{
+					prevCanBeNb = matchNb[0].matched;
+				}
+				
 			}else
-			 {
-				 m_carLus = "";
-			 }				
+			{
+				prevCanBeMotCle=false;
+				prevCanBeSymbole=false;
+				prevCanBeId=false;
+				prevCanBeNb=false;
+				if(!isspace(carLu))
+				{
+					m_carLus = "";
+					m_ss.unget();
+				}else
+				 {
+					 m_carLus = "";
+				 }		
+			}			
 		}else 
 		{
 			if(canBeMotCle)
@@ -262,6 +289,9 @@ Symbole * Lexer::getNext(){
 		
 		
 	}
+	
+	
+	
 	return symb;
 }
 

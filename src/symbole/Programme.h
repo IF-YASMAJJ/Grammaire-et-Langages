@@ -14,6 +14,7 @@ class Programme : public Symbole
 		virtual operator std::string() const;
 		void initialiser(Symbole **, int taille);
 		void interpreter(Automate *automate);
+		void transformer(Automate *automate);
 	protected:
 	private:
 		LigneDeclaration * m_blocDec;
