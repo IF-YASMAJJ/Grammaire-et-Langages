@@ -18,7 +18,7 @@ class Expression : public Symbole
 		virtual void remplirIdsExpression(vector<string> &ids)=0;
 		virtual int calculer(Automate *automate)=0;
 		virtual int* evaluer(Automate *automate)=0;
-		virtual Expression * transformer(Automate* automate) = 0;// { return NULL; }
+		virtual Expression * transformer(Automate* automate) = 0;
 	protected:
 	private:
 };

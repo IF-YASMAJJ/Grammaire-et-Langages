@@ -325,6 +325,13 @@ void Automate::transformer()
 	Symbole* s = m_pileSymbole.top();
 	if (*s == PROGRAMME)
 	{
+		for each (pair<string,SymboleTable*> s in m_aSymboles)
+		{
+			if (!s.second->m_constante)
+			{
+				s.second->m_connnue = false;
+			}
+		}
 		((Programme*)s)->transformer(this);
 	}
 }
