@@ -29,7 +29,8 @@
 #include "symbole/Moins.h"
 #include "symbole/Lire.h"
 #include "symbole/Ecrire.h"
-
+#include "symbole/ErreurLexicale.h"
+#include "MessagesErreurs.h"
 
 
 Lexer::Lexer()
@@ -241,6 +242,10 @@ Symbole * Lexer::getNext(){
 				if(canBeNb)
 				{
 					prevCanBeNb = matchNb[0].matched;
+				}
+				else{
+					MessagesErreurs::ErreurLexicale(0,0,&carLu);
+					symb = new ErreurLexicale();
 				}
 
 			}else

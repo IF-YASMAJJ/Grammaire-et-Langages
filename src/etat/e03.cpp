@@ -26,6 +26,9 @@ void E03::transition(Automate* automate)
     case IDENTIFICATEUR:
         automate->decalage(s, new E27());
         break;
+	case ERREURLEXICALE:
+		automate->arreter();
+		break;
 	default:
 		automate->reduction(new Programme(), 2);
     }

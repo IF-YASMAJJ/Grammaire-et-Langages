@@ -22,6 +22,7 @@ Automate::Automate()
 	m_transformation = false;
 	m_execution = false;
 	m_etatAnalyse = true;
+	m_arret = false;
 }
 
 int Automate::scannerFichier(string cheminFichier)
@@ -51,7 +52,7 @@ void Automate::lecture(bool execution, bool statique, bool affichage, bool trans
 
 	//Initialisation et lancement de l'automate.
 	m_pileEtats.push(new E00());
-	while (!m_pileEtats.top()->isFinal())
+	while (!m_arret && !m_pileEtats.top()->isFinal())
 	{
 		m_pileEtats.top()->transition(this);
 	}

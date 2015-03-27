@@ -21,6 +21,9 @@ void E33::transition(Automate* automate)
 	case VIRGULE:
         automate->decalage(s, new E35());
         break;
+	case ERREURLEXICALE:
+		automate->arreter();
+		break;
     default:
 		MessagesErreurs::ErreurSyntaxique(0, 0, ATTENDU_VIRGPOINTVIRG);
         break;

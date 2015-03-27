@@ -44,6 +44,7 @@ class Automate
 		//void analyseStatic();
 		void interpreter();
 		void transformer();
+		void arreter(){m_arret = true;}
 
     protected:
         stack <Symbole*> m_pileSymbole;
@@ -56,6 +57,7 @@ class Automate
 		bool m_transformation;
 		bool m_execution;
 		bool m_etatAnalyse;
+		bool m_arret;
     private:
 		void majTableSymboles(Symbole *s);
 		/**

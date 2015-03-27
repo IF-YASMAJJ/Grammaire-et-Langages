@@ -27,6 +27,9 @@ void E12::transition(Automate* automate)
 	case NOMBRE:
 		automate->decalage(s, new E22());
 		break;
+	case ERREURLEXICALE:
+		automate->arreter();
+		break;
 	default:
 		MessagesErreurs::Erreur("un identificateur, un numérique ou un symbole "
 						"'(' est attendu");

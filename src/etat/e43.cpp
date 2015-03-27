@@ -17,6 +17,9 @@ void E43::transition(Automate* automate)
 	case IDENTIFICATEUR:
         automate->decalage(s, new E44());
         break;
+	case ERREURLEXICALE:
+		automate->arreter();
+		break;
 	default:
 		MessagesErreurs::IdentificateurNonDeclare();
         break;

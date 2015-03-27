@@ -17,6 +17,9 @@ void E39::transition(Automate* automate)
 	case NOMBRE:
         automate->decalage(s, new E40());
         break;
+	case ERREURLEXICALE:
+		automate->arreter();
+		break;
 	default:
 		MessagesErreurs::ErreurSyntaxique(0, 0, ATTENDU_VALEUR);
         break;
