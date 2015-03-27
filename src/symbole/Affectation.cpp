@@ -25,7 +25,7 @@ Affectation::operator std::string() const
 	{
 		tmp = "";
 	}
-	ss << m_id << " := " << tmp << ";";
+	ss << m_id << " := " << tmp << ";"<<endl;
 	return ss.str();
 }
 
@@ -42,5 +42,13 @@ void Affectation::transformer(Automate* automate)
 	{
 		delete m_expression;
 		m_expression = tmp;
+	}
+
+	int * val = m_expression->evaluer(automate);
+	if (val)
+	{
+		auto symb = automate->chercherSymbole(m_id);
+		symb->m_connnue = true; 
+		symb->m_valeur = *val;
 	}
 }

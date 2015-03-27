@@ -23,6 +23,9 @@ void E02::transition(Automate* automate)
     case CONST:
         automate->decalage(s, new E37());
         break;
+	case ERREURLEXICALE:
+		automate->arreter();
+		break;
 	default:
 		automate->reduction(new BlocInst(), 0);
     }

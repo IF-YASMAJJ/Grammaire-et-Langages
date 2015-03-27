@@ -35,70 +35,81 @@ class MessagesErreurs
 		}
 
 		static void FichierInexistant(string nomFichier){
-			cerr << "Erreur a l'ouverture du fichier " << nomFichier;
+			cerr << "Erreur a l'ouverture du fichier " << nomFichier << endl;
 		}
 
 		static void IdentificateurNonDeclare(){
-			m_FileMessages.push("Identificateur requis");
+			m_FileMessagesStatiques.push("Identificateur requis");
 		}
 
 		static void DoubleDeclaration(string nomVariable){
-			m_FileMessages.push("la variable " + nomVariable + " est deja declaree");
+			m_FileMessagesDoubleDeclaration.push("la variable " + nomVariable + " est deja declaree");
 		}
 
 		static void ConstanteNonModifiable(string nomVariable){
-			m_FileMessages.push("la variable " + nomVariable + " est une constante.");
+			m_FileMessagesStatiques.push("la variable " + nomVariable + " est une constante.");
 		}
 
 		static void ASValeurInconnue(string expression){
-			m_FileMessages.push("une valeur dans l'expression " + expression + " n'est pas connue.");
+			m_FileMessagesStatiques.push("une valeur dans l'expression " + expression + " n'est pas connue.");
 		}
 
 		static void ASVariableNonAffectee(string nomVariable){
-			m_FileMessages.push("variable non affectee : " + nomVariable);
+			m_FileMessagesStatiques.push("variable non affectee : " + nomVariable);
 		}
 
 		static void ASVariableNonUtilisee(string nomVariable){
-			m_FileMessages.push("variable non utilisee : " + nomVariable);
+			m_FileMessagesStatiques.push("variable non utilisee : " + nomVariable);
 		}
 
 		static void ASVariableNonDeclaree(string nomVariable){
-			m_FileMessages.push("la variable " + nomVariable + " n'a pas ete declaree.");
+			m_FileMessagesStatiques.push("la variable " + nomVariable + " n'a pas ete declaree.");
 		}
 
-		static void ErreurLexicale(int ligne, int colonne){
-			m_FileMessages.push("Erreur lexicale (" + std::to_string(ligne) + ":" + std::to_string(colonne) + ") caractere _");
+		static void ErreurLexicale(int ligne, int colonne, string caractere){
+			cerr << "Erreur lexicale (" << std::to_string(ligne) << ":" << std::to_string(colonne) << ") caractere " << caractere;
 		}
 
-		static void ErreurLexicale(int ligne, int colonne, int nature){
+		static void ErreurSyntaxique(int ligne, int colonne, int nature){
 			switch(nature){
 			case ATTENDU_VIRGPOINTVIRG:
-				m_FileMessages.push("Erreur syntaxique (" + std::to_string(ligne) + ":" + std::to_string(colonne) + ") symbole , ou ; attendu");
+				m_FileMessagesStatiques.push("Erreur syntaxique (" + std::to_string(ligne) + ":" + std::to_string(colonne) + ") symbole , ou ; attendu");
 				return;
 			case ATTENDU_EGAL:
-				m_FileMessages.push("Erreur syntaxique (" + std::to_string(ligne) + ":" + std::to_string(colonne) + ") symbole = attendu");
+				m_FileMessagesStatiques.push("Erreur syntaxique (" + std::to_string(ligne) + ":" + std::to_string(colonne) + ") symbole = attendu");
 				return;
 			case ATTENDU_VALEUR:
-				m_FileMessages.push("Erreur syntaxique (" + std::to_string(ligne) + ":" + std::to_string(colonne) + ") valeur attendue");
+				m_FileMessagesStatiques.push("Erreur syntaxique (" + std::to_string(ligne) + ":" + std::to_string(colonne) + ") valeur attendue");
 				return;
 			case ATTENDU_OPERATEUR:
-				m_FileMessages.push("Erreur syntaxique (" + std::to_string(ligne) + ":" + std::to_string(colonne) + ") operateur := attendu");
+				m_FileMessagesStatiques.push("Erreur syntaxique (" + std::to_string(ligne) + ":" + std::to_string(colonne) + ") operateur := attendu");
 				return;
 			}
 		}
 
-		static void EcrireMessages(){
-			while(!m_FileMessages.empty()){
-				cout << m_FileMessages.front() << endl;
-				m_FileMessages.pop();
+		static void EcrireMessagesStatiques(){
+			while(!m_FileMessagesStatiques.empty()){
+				cerr << m_FileMessagesStatiques.front() << endl;
+				m_FileMessagesStatiques.pop();
+			}
+		}
+
+		static void EcrireMessagesDoubleDeclaration(){
+			while(!m_FileMessagesDoubleDeclaration.empty()){
+				cerr << m_FileMessagesDoubleDeclaration.front() << endl;
+				m_FileMessagesDoubleDeclaration.pop();
 			}
 		}
 	protected:
 	private:
 		/**
+		 * Ne contient que les messages concernant des doubles déclarations de variables.
+		 */
+		static queue<string> m_FileMessagesDoubleDeclaration;
+		/**
 		 * Ne contient que les messages émanant de l'analyse statique.
 		 */
-		static queue<string> m_FileMessages;
+		static queue<string> m_FileMessagesStatiques;
 };
 
 #endif // MESSAGESERREURS_H

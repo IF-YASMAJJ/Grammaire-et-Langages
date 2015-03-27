@@ -31,7 +31,7 @@ class Automate
 		Automate();
         virtual ~Automate();
 
-        void lecture();
+        void lecture(bool execution, bool statique, bool affichage, bool transformation);
         void decalage(Symbole *s, Etat *e);
         Symbole *getNextLexer();
 		void reduction(Symbole *s, int nbSymboles);
@@ -44,6 +44,7 @@ class Automate
 		//void analyseStatic();
 		void interpreter();
 		void transformer();
+		void arreter(){m_arret = true;}
 
     protected:
         stack <Symbole*> m_pileSymbole;
@@ -51,6 +52,12 @@ class Automate
         ArbreSymboles m_aSymboles;
 		Lexer m_lexer;
 		Symbole *m_symbole;
+		bool m_statique;
+		bool m_affichage;
+		bool m_transformation;
+		bool m_execution;
+		bool m_etatAnalyse;
+		bool m_arret;
     private:
 		void majTableSymboles(Symbole *s);
 		/**

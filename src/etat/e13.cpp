@@ -22,6 +22,9 @@ void E13::transition(Automate* automate)
 	case DIV:
 		automate->decalage(s, new E15());
 		break;
+	case ERREURLEXICALE:
+		automate->arreter();
+		break;
 	default:
 		//operationAd est considéré comme une expression
 		automate->reduction(new OperationAd(), 3);

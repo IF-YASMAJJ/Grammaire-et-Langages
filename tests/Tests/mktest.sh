@@ -4,7 +4,7 @@ nKo=0
 nTotal=0
 nMis=0
 
-for i in ??.*
+for i in 0*
 do
   ./test.sh $i results.csv
   result=$?

@@ -3,7 +3,7 @@
 
 #include <boost/regex.hpp>
 
-#include <stdlib.h> 
+#include <stdlib.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -29,7 +29,8 @@
 #include "symbole/Moins.h"
 #include "symbole/Lire.h"
 #include "symbole/Ecrire.h"
-
+#include "symbole/ErreurLexicale.h"
+#include "MessagesErreurs.h"
 
 
 Lexer::Lexer()
@@ -55,7 +56,7 @@ int Lexer::scannerFichier(string cheminFichier)
 
     if ( file )
     {
-		
+
         m_ss << file.rdbuf();
 		//cout << file.rdbuf();
         file.close();
@@ -65,10 +66,10 @@ int Lexer::scannerFichier(string cheminFichier)
 		if(DEBUG) std::cerr << "Erreur à l'ouverture de " << cheminFichier << std::endl;
 		return -1;
 	}
-    
+
     if(DEBUG) std::cout<< " lecture du fichier finie"<<std::endl;
     return 0 ;
-	
+
 }
 
 Symbole * getCurrent()
@@ -81,42 +82,42 @@ Symbole * getCurrent()
 
 
 Symbole * Lexer::getNext(){
-	
+
 	/* boucler sur la lecture de caractere
 		*
 		* rechercher les expreg correspondant totalement ou partiellement aux caractères lus jusqu'a present
-		* 
+		*
 		* on lit les caractères jusqu'a ce que plus aucune expreg ne corresponde.
 		* A ce moment la, si l'on avait une expreg correspondait (totalement), on enregistre le m_symbole associé.
 		* Sinon il y a une erreur.
-		* 
+		*
 		* http://www.boost.org/doc/libs/1_31_0/libs/regex/doc/partial_matches.html
-		* 
+		*
 	*/
-		
+
 	if(DEBUG) std::cout  << "Lexer::getNext()"<<std::endl;
-	
-	
+
+
 	m_carLus = "";
 	char carLu;
-	 
+
 	bool prevCanBeMotCle=false;
 	bool prevCanBeSymbole=false;
 	bool prevCanBeId=false;
 	bool prevCanBeNb=false;
-	
+
 	bool canBeMotCle=false;
 	bool canBeSymbole=false;
 	bool canBeId=false;
 	bool canBeNb=false;
-	
+
 	bool err_lexicale = false;
 	boost::cmatch matchMotCle;
 	boost::cmatch matchSymbole;
 	boost::cmatch matchId;
 	boost::cmatch matchNb;
 	Symbole * symb = NULL;
-	
+
 	while (symb == NULL)
 	{
 		if (!m_ss.get(carLu) && m_carLus=="")
@@ -134,7 +135,7 @@ Symbole * Lexer::getNext(){
 		canBeSymbole = boost::regex_match((m_carLus+carLu).c_str(), matchSymbole, m_symbole, boost::match_default | boost::match_partial);
 		canBeId = boost::regex_match((m_carLus+carLu).c_str(), matchId, m_id, boost::match_default | boost::match_partial);
 		canBeNb = boost::regex_match((m_carLus+carLu).c_str(), matchNb, m_nb, boost::match_default | boost::match_partial);
-		
+
 		if(!canBeMotCle && !canBeSymbole && !canBeId && !canBeNb)
 		{
 			// pas de correspondance, regarder les match précédent
@@ -202,7 +203,7 @@ Symbole * Lexer::getNext(){
 					{
 						symb = new DeuxPointsEgal();
 					}
-					
+
 				}else
 				{
 						if(prevCanBeId)
@@ -231,7 +232,7 @@ Symbole * Lexer::getNext(){
 			}
 			if(err_lexicale)
 			{
-				//erreur lexicale detectée 
+				//erreur lexicale detectée
 				//on continue la recherche, on ignore le dernier caractère lu
 				if(canBeMotCle)
 				{
@@ -249,7 +250,11 @@ Symbole * Lexer::getNext(){
 				{
 					prevCanBeNb = matchNb[0].matched;
 				}
-				
+				else{
+					MessagesErreurs::ErreurLexicale(0,0,&carLu);
+					symb = new ErreurLexicale();
+				}
+
 			}else
 			{
 				prevCanBeMotCle=false;
@@ -263,9 +268,9 @@ Symbole * Lexer::getNext(){
 				}else
 				 {
 					 m_carLus = "";
-				 }		
-			}			
-		}else 
+				 }
+			}
+		}else
 		{
 			if(canBeMotCle)
 			{
@@ -284,14 +289,14 @@ Symbole * Lexer::getNext(){
 				prevCanBeNb = matchNb[0].matched;
 			}
 			m_carLus += carLu;
-			
+
 		}
-		
-		
+
+
 	}
-	
-	
-	
+
+
+
 	return symb;
 }
 

@@ -18,8 +18,11 @@ void E05::transition(Automate* automate)
     case POINTVIRGULE:
         automate->decalage(s, new E06());
         break;
+	case ERREURLEXICALE:
+		automate->arreter();
+		break;
 	default:
-        MessagesErreurs::ErreurLexicale(0, 0, ATTENDU_VIRGPOINTVIRG);
+        MessagesErreurs::ErreurSyntaxique(0, 0, ATTENDU_VIRGPOINTVIRG);
         break;
 	}
 }

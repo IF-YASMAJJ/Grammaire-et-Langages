@@ -17,6 +17,12 @@ using namespace std;
 Automate::Automate()
 {
 	m_symbole = NULL;
+	m_statique = false;
+	m_affichage = false;
+	m_transformation = false;
+	m_execution = false;
+	m_etatAnalyse = true;
+	m_arret = false;
 }
 
 int Automate::scannerFichier(string cheminFichier)
@@ -28,14 +34,50 @@ Automate::~Automate()
 {
 }
 
-void Automate::lecture()
+void Automate::lecture(bool execution, bool statique, bool affichage, bool transformation)
 {
+
+	if(execution){
+		m_execution = true;
+		m_statique = true;
+	}
+	if(transformation){
+		m_transformation = true;
+		m_statique = true;
+	}
+
+	if(statique && !m_statique)		m_statique = true;
+
+	if(affichage)  m_affichage = true;
+
+	//Initialisation et lancement de l'automate.
 	m_pileEtats.push(new E00());
-	while (!m_pileEtats.top()->isFinal())
+	while (!m_arret && !m_pileEtats.top()->isFinal())
 	{
 		m_pileEtats.top()->transition(this);
 	}
-	verifierTable();
+
+	//Dans tous les cas, on affiche les messages concernant les doubles déclarations
+	MessagesErreurs::EcrireMessagesDoubleDeclaration();
+
+	if(m_statique){
+		verifierTable();
+		MessagesErreurs::EcrireMessagesStatiques();
+	}
+
+	if(!m_etatAnalyse)	return;
+
+	if(m_transformation){
+		transformer();
+	}
+
+	if(m_execution){
+		interpreter();
+	}
+
+	if(m_affichage){
+		afficherProgramme();
+	}
 }
 
 void Automate::decalage(Symbole *s, Etat *e){
@@ -283,6 +325,13 @@ void Automate::transformer()
 	Symbole* s = m_pileSymbole.top();
 	if (*s == PROGRAMME)
 	{
+		for each (pair<string,SymboleTable*> s in m_aSymboles)
+		{
+			if (!s.second->m_constante)
+			{
+				s.second->m_connnue = false;
+			}
+		}
 		((Programme*)s)->transformer(this);
 	}
 }

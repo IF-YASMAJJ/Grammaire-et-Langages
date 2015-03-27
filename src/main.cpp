@@ -7,7 +7,8 @@
 
 using namespace std;
 
-queue<string> MessagesErreurs::m_FileMessages;
+queue<string> MessagesErreurs::m_FileMessagesStatiques;
+queue<string> MessagesErreurs::m_FileMessagesDoubleDeclaration;
 
 int main(int argc, const char * argv[])
 {
@@ -27,36 +28,45 @@ int main(int argc, const char * argv[])
 		cheminFichier = argv[argc-1];
 
 		if (automate.scannerFichier(cheminFichier) == 0) {
-			automate.lecture();
+			bool execution = false;
+			bool statique = false;
+			bool affichage = false;
+			bool transformation = false;
 			for (int i = 1; i < argc-1; i++) {
 				string option = argv[i];
 				if (option.length() == 2 && option[0] == '-') {
 					switch (option[1]) {
-						case 'p':
-							automate.afficherProgramme();
+						case 'e':
+							// executer le programme
+							execution = true;
 							break;
 
 						case 'a':
 							// analyser le programme de maniere statique
+							statique = true;
 							break;
 
-						case 'e':
-							automate.interpreter();
+						case 'p':
+							//automate.afficherProgramme();
+							affichage = true;
 							break;
 
 						case 'o':
-							automate.transformer();
+							//optimiser les expressions et instructions
+							transformation = true;
 							break;
 
 						default:
 							break;
 					}
+				} else {
+					//TODO : on signale une mauvaise option ?
 				}
 			}
-
+			automate.lecture(execution, statique, affichage, transformation);
 			return EXIT_SUCCESS;
 		} else {
-			// afficher sur sortie d'erruer
+			MessagesErreurs::FichierInexistant(cheminFichier);
 			return EXIT_FAILURE;
 		}
 	}

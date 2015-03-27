@@ -19,7 +19,7 @@ int  Identificateur::calculer(Automate *automate){
 
 int* Identificateur::evaluer(Automate *automate) {
 	SymboleTable* s = automate->chercherSymbole(m_id);
-	if (s->m_constante)
+	if (s->m_connnue | s->m_constante)
 	{
 		return new int(s->m_valeur);
 	}

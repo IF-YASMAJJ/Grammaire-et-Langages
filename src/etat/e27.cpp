@@ -17,8 +17,11 @@ void E27::transition(Automate* automate)
 	case DEUXPOINTSEGAL:
         automate->decalage(s, new E28());
         break;
+	case ERREURLEXICALE:
+		automate->arreter();
+		break;
 	default:
-		MessagesErreurs::ErreurLexicale(0, 0, ATTENDU_OPERATEUR);
+		MessagesErreurs::ErreurSyntaxique(0, 0, ATTENDU_OPERATEUR);
         break;
 	}
 }

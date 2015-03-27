@@ -21,8 +21,11 @@ void E41::transition(Automate* automate)
 	case VIRGULE:
         automate->decalage(s, new E43());
         break;
+	case ERREURLEXICALE:
+		automate->arreter();
+		break;
 	default:
-		MessagesErreurs::ErreurLexicale(0, 0, ATTENDU_VIRGPOINTVIRG);
+		MessagesErreurs::ErreurSyntaxique(0, 0, ATTENDU_VIRGPOINTVIRG);
         break;
 	}
 }

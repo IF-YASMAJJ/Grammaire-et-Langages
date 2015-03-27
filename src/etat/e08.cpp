@@ -26,6 +26,9 @@ void E08::transition(Automate* automate)
 	case MOINS:
 		automate->decalage(s, new E11());
 		break;
+	case ERREURLEXICALE:
+		automate->arreter();
+		break;
 	default:
 		MessagesErreurs::Erreur("Opérateur '+'/'-' ou ';' attendu");
 		break;

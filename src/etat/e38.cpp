@@ -17,8 +17,11 @@ void E38::transition(Automate* automate)
 	case EGAL:
         automate->decalage(s, new E39());
         break;
+	case ERREURLEXICALE:
+		automate->arreter();
+		break;
 	default:
-		MessagesErreurs::ErreurLexicale(0, 0, ATTENDU_EGAL);
+		MessagesErreurs::ErreurSyntaxique(0, 0, ATTENDU_EGAL);
         break;
 	}
 }

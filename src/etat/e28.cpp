@@ -28,6 +28,9 @@ void E28::transition(Automate* automate)
 	case PAROUVRANTE:
         automate->decalage(s, new E24());
         break;
+	case ERREURLEXICALE:
+		automate->arreter();
+		break;
 	default:
 		MessagesErreurs::Erreur("un identificateur, un numérique ou un symbole "
 						"'(' est attendu");

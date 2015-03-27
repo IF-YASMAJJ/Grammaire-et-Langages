@@ -17,8 +17,11 @@ void E18::transition(Automate* automate)
 	case NOMBRE:
         automate->decalage(s, new E19());
         break;
+	case ERREURLEXICALE:
+		automate->arreter();
+		break;
 	default:
-		MessagesErreurs::ErreurLexicale(0, 0, ATTENDU_VALEUR);
+		MessagesErreurs::ErreurSyntaxique(0, 0, ATTENDU_VALEUR);
         break;
 	}
 }

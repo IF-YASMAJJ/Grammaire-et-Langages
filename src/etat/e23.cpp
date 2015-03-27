@@ -22,6 +22,9 @@ void E23::transition(Automate* automate)
 	case DIV:
 		automate->decalage(s, new E15());
 		break;
+	case ERREURLEXICALE:
+		automate->arreter();
+		break;
 	default:
 		//E->T
 		automate->reduction();

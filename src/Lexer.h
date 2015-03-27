@@ -21,7 +21,7 @@ class Lexer
 	private:
 		stringstream m_ss;
 		string m_carLus;
-		boost::regex m_motCle;	
+		boost::regex m_motCle;
 		boost::regex m_symbole;
 		boost::regex m_nb;
 		boost::regex m_id;

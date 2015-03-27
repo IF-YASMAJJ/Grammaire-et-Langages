@@ -36,7 +36,7 @@ Programme::operator std::string() const
 	{
 		inst = "";
 	}
-	ss << dec << endl << inst << endl;
+	ss << dec << inst;
 	return ss.str();
 }
 

@@ -35,7 +35,7 @@ BlocDec::operator std::string() const
 	{
 		current = "";
 	}
-	ss << prev << current << endl;
+	ss << prev << current;
 	return ss.str();
 }
 
