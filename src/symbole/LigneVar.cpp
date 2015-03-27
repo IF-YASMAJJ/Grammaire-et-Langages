@@ -34,9 +34,9 @@ LigneVar::operator std::string() const
 				ss << " " << tmp[i];
 			}
 		}
-		ss << ", ";
+		ss << ",";
 	}
-	ss << m_id <<";";
+	ss << m_id <<";"<<endl;
 
 	return ss.str();
 
