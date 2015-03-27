@@ -67,7 +67,7 @@ class MessagesErreurs
 		}
 
 		static void ErreurLexicale(int ligne, int colonne, string caractere){
-			cerr << "Erreur lexicale (" << std::to_string(ligne) << ":" << std::to_string(colonne) << ") caractere _";
+			cerr << "Erreur lexicale (" << std::to_string(ligne) << ":" << std::to_string(colonne) << ") caractere " << caractere;
 		}
 
 		static void ErreurSyntaxique(int ligne, int colonne, int nature){
