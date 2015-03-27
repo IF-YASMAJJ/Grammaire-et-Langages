@@ -35,9 +35,9 @@ LigneConst::operator std::string() const
 				ss << " " << tmp[i];
 			}
 		}
-		ss << ", ";
+		ss << ",";
 	}
-	ss << m_id << " = " << m_value << ";";
+	ss << m_id << " = " << m_value << ";"<<endl;
 
 	return ss.str();
 

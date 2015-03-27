@@ -27,7 +27,7 @@ Ecriture::operator std::string() const
 	{
 		s = "";
 	}
-	ss << "ecrire " << s << ";";
+	ss << "ecrire " << s << ";"<<endl;
 	return ss.str();
 
 }
