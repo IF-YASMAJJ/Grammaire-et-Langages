@@ -16,16 +16,16 @@ Affectation::~Affectation()
 Affectation::operator std::string() const
 {
 	stringstream ss;
-	string tmp;
+	string expression;
 	if (m_expression != NULL)
 	{
-		tmp = (string)*m_expression;
+		expression = (string)*m_expression;
 	}
 	else
 	{
-		tmp = "";
+		expression = "";
 	}
-	ss << m_id << " := " << tmp << ";"<<endl;
+	ss << m_id << " := " << expression << ";"<<endl;
 	return ss.str();
 }
 
@@ -37,6 +37,7 @@ void Affectation::interpreter(Automate *automate)
 
 void Affectation::transformer(Automate* automate)
 {
+	//simplifier l'expression
 	Expression *tmp =  m_expression->transformer(automate);
 	if (tmp)
 	{
@@ -44,6 +45,7 @@ void Affectation::transformer(Automate* automate)
 		m_expression = tmp;
 	}
 
+	//met à jour la table des symboles 
 	int * val = m_expression->evaluer(automate);
 	if (val)
 	{
