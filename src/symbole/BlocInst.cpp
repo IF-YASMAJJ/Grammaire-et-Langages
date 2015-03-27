@@ -28,6 +28,7 @@ BlocInst::operator std::string() const
 {
 
 	stringstream ss;
+
 	string prev;
 	if (m_prevInst != NULL)
 	{
@@ -37,6 +38,7 @@ BlocInst::operator std::string() const
 	{
 		prev = "";
 	}
+
 	string current;
 	if (m_currentLine != NULL)
 	{
@@ -46,6 +48,7 @@ BlocInst::operator std::string() const
 	{
 		current = "";
 	}
+
 	ss << prev << current;
 	return ss.str();
 }
@@ -98,6 +101,7 @@ void BlocInst::interpreter(Automate *automate)
 	{
 		m_prevInst->interpreter(automate);
 	}
+
 	if (m_currentLine)
 	{
 		m_currentLine->interpreter(automate);
@@ -110,6 +114,7 @@ void BlocInst::transformer(Automate *automate)
 	{
 		m_prevInst->transformer(automate);
 	}
+
 	if (m_currentLine)
 	{
 		m_currentLine->transformer(automate);
