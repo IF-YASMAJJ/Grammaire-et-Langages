@@ -221,7 +221,8 @@ Symbole * Lexer::getNext(){
 								if(!isspace(carLu))
 								{
 									err_lexicale = true;
-									std::cerr<<"Erreur lexicale ("+std::to_string(m_numLigne)+":"+std::to_string(m_numColonne)+") caractere "+carLu<<std::endl;			
+									MessagesErreurs::ErreurLexicale(m_numLigne,m_numColonne,&carLu);
+									
 								}else
 								 {
 									if(DEBUG) std::cout<<"SPACE"<<std::endl;
@@ -250,11 +251,7 @@ Symbole * Lexer::getNext(){
 				{
 					prevCanBeNb = matchNb[0].matched;
 				}
-				else{
-					MessagesErreurs::ErreurLexicale(0,0,&carLu);
-					symb = new ErreurLexicale();
-				}
-
+				
 			}else
 			{
 				prevCanBeMotCle=false;
