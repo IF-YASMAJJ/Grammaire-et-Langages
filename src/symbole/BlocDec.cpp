@@ -11,7 +11,8 @@ BlocDec::BlocDec()
 
 BlocDec::~BlocDec()
 {
-	//dtor
+	delete m_currentLine;
+	delete m_prevDec;
 }
 
 BlocDec::operator std::string() const
@@ -26,6 +27,7 @@ BlocDec::operator std::string() const
 	else{
 		prev = "";
 	}
+
 	string current;
 	if (m_currentLine != NULL)
 	{
@@ -35,6 +37,7 @@ BlocDec::operator std::string() const
 	{
 		current = "";
 	}
+
 	ss << prev << current;
 	return ss.str();
 }

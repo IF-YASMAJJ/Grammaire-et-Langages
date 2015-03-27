@@ -18,16 +18,18 @@ Ecriture::~Ecriture()
 Ecriture::operator std::string() const
 {
 	stringstream ss;
-	string s;
+
+	string expression;
 	if (m_expression != NULL)
 	{
-		s = (string)*m_expression;
+		expression = (string)*m_expression;
 	}
 	else
 	{
-		s = "";
+		expression = "";
 	}
-	ss << "ecrire " << s << ";"<<endl;
+
+	ss << "ecrire " << expression << ";"<<endl;
 	return ss.str();
 
 }

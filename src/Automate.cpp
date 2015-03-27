@@ -325,6 +325,7 @@ void Automate::transformer()
 	Symbole* s = m_pileSymbole.top();
 	if (*s == PROGRAMME)
 	{
+		//initialise la table des symboles 
 		for (auto symbole = m_aSymboles.begin(); symbole != m_aSymboles.end(); symbole++)
 		{
 			if (!symbole->second->m_constante)
@@ -332,6 +333,7 @@ void Automate::transformer()
 				symbole->second->m_connnue = false;
 			}
 		}
+		//optimise le programme
 		((Programme*)s)->transformer(this);
 	}
 }
