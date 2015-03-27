@@ -40,6 +40,8 @@ Lexer::Lexer()
 	m_symbole = boost::regex("-|\\+|/|\\*|,|;|\\(|\\)|=|:=");
 	m_nb = boost::regex("[0-9]+");
 	m_id = boost::regex("[a-zA-Z][a-zA-Z0-9]*");
+	m_numLigne = 1;
+	m_numColonne = 0;
 }
 
 Lexer::~Lexer()
@@ -122,6 +124,11 @@ Symbole * Lexer::getNext(){
 		{
 			symb = new EndOfFile();
 			break;
+		}
+		m_numColonne++;
+		if(carLu == '\n')
+		{
+			m_numLigne++;
 		}
 		err_lexicale = false;
 		canBeMotCle = boost::regex_match((m_carLus+carLu).c_str(), matchMotCle, m_motCle, boost::match_default | boost::match_partial);
@@ -214,10 +221,11 @@ Symbole * Lexer::getNext(){
 								if(!isspace(carLu))
 								{
 									err_lexicale = true;
-									if(DEBUG) std::cout<<"Erreur lexicale 42 !   ("<<(m_carLus+carLu)<<")"<<std::endl;
+									MessagesErreurs::ErreurLexicale(m_numLigne,m_numColonne,&carLu);
+									
 								}else
 								 {
-									if(DEBUG) std::cout<<"SPAAAACE"<<std::endl;
+									if(DEBUG) std::cout<<"SPACE"<<std::endl;
 								 }
 							}
 						}
@@ -243,11 +251,7 @@ Symbole * Lexer::getNext(){
 				{
 					prevCanBeNb = matchNb[0].matched;
 				}
-				else{
-					MessagesErreurs::ErreurLexicale(0,0,&carLu);
-					symb = new ErreurLexicale();
-				}
-
+				
 			}else
 			{
 				prevCanBeMotCle=false;
