@@ -129,6 +129,7 @@ Symbole * Lexer::getNext(){
 		if(carLu == '\n')
 		{
 			m_numLigne++;
+			m_numColonne=0;
 		}
 		err_lexicale = false;
 		canBeMotCle = boost::regex_match((m_carLus+carLu).c_str(), matchMotCle, m_motCle, boost::match_default | boost::match_partial);
@@ -222,7 +223,7 @@ Symbole * Lexer::getNext(){
 								{
 									err_lexicale = true;
 									MessagesErreurs::ErreurLexicale(m_numLigne,m_numColonne,&carLu);
-									
+
 								}else
 								 {
 									if(DEBUG) std::cout<<"SPACE"<<std::endl;
@@ -251,7 +252,7 @@ Symbole * Lexer::getNext(){
 				{
 					prevCanBeNb = matchNb[0].matched;
 				}
-				
+
 			}else
 			{
 				prevCanBeMotCle=false;
