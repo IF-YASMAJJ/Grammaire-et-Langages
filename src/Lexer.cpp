@@ -36,10 +36,10 @@
 Lexer::Lexer()
 {
 
-	m_motCle = boost::regex("var|const|lire|ecrire");
+	m_motCle =	boost::regex("var|const|lire|ecrire");
 	m_symbole = boost::regex("-|\\+|/|\\*|,|;|\\(|\\)|=|:=");
-	m_nb = boost::regex("[0-9]+");
-	m_id = boost::regex("[a-zA-Z][a-zA-Z0-9]*");
+	m_nb =		boost::regex("[0-9]+");
+	m_id =		boost::regex("[a-zA-Z][a-zA-Z0-9]*");
 	m_numLigne = 1;
 	m_numColonne = 0;
 }

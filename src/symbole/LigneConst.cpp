@@ -22,6 +22,7 @@ LigneConst::operator std::string() const
 {
 	std::stringstream ss;
 	ss << "const ";
+	//affichage des précédentes constantes déclarées sur la même ligne
 	if (m_prevConst != NULL)
 	{
 		string prevConst = *m_prevConst;
@@ -37,6 +38,8 @@ LigneConst::operator std::string() const
 		}
 		ss << ",";
 	}
+
+	//affichage de la constante courante
 	ss << m_id << " = " << m_value << ";"<<endl;
 
 	return ss.str();

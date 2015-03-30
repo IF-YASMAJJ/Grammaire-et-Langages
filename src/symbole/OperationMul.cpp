@@ -61,6 +61,7 @@ void OperationMul::remplirIdsExpression(vector<string> &ids){
 }
 
 int  OperationMul::calculer(Automate *automate){
+	//calcul récursif de la valeur de chaque composante
 	if (m_op == "*")
 	{
 		return m_terme->calculer(automate) * m_facteur->calculer(automate);
@@ -75,13 +76,13 @@ int  OperationMul::calculer(Automate *automate){
 int* OperationMul::evaluer(Automate *automate) {
 	int * t = m_terme->evaluer(automate);
 	int * f = m_facteur->evaluer(automate);
-	if ((t == NULL) | (f == NULL))
+	if ((t == NULL) | (f == NULL))//une des deux composantes est inconnue
 	{
 		delete t;
 		delete f;
 		return NULL;
 	}
-	else
+	else //calcul du résultat de l'opération 
 	{
 		int * ret = new int();
 		if (m_op == "*")
@@ -126,6 +127,7 @@ Expression * OperationMul::transformer(Automate* automate)
 	}
 
 	//gestion des éléments neutre et null
+	//partie gauche 
 	tmp = m_terme->evaluer(automate);
 	if (tmp)
 	{
@@ -145,6 +147,7 @@ Expression * OperationMul::transformer(Automate* automate)
 		delete tmp;
 	}
 
+	//partie droite
 	tmp = m_facteur->evaluer(automate);
 	if (tmp)
 	{

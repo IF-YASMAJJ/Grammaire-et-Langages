@@ -18,6 +18,8 @@ int  Identificateur::calculer(Automate *automate){
 }
 
 int* Identificateur::evaluer(Automate *automate) {
+	//renvoie un pointeur sur la valeur associé à l'identificateur 
+	//renvoie null si la valeur n'est pas connue
 	SymboleTable* s = automate->chercherSymbole(m_id);
 	if (s->m_connnue | s->m_constante)
 	{
