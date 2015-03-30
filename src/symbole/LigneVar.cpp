@@ -21,6 +21,8 @@ LigneVar::operator std::string() const
 	std::stringstream ss;
 	ss << "var ";
 	string prevVar;
+
+	//affichage des précédentes variables déclarées sur la même ligne 
 	if (m_prevId != NULL)
 	{
 		prevVar = (string)*m_prevId;
@@ -36,6 +38,8 @@ LigneVar::operator std::string() const
 		}
 		ss << ",";
 	}
+
+	//affichage de la variable courante
 	ss << m_id <<";"<<endl;
 
 	return ss.str();

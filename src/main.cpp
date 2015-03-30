@@ -13,8 +13,6 @@ queue<string> MessagesErreurs::m_FileMessagesDoubleDeclaration;
 int main(int argc, const char * argv[])
 {
 
-
-	//-----------------------------------------------------------------------------
 	string cheminFichier;
 	Automate automate;
 
@@ -77,20 +75,3 @@ int main(int argc, const char * argv[])
 	return 0;
 }
 
-// void analyserLigneCommande(int argc, const char * argv[])
-// {
-// 	string cheminFichier;
-// 	Lexer lexer;
-// 	if (argc == 0) {
-// 		fprintf(stderr, "Erreur, veuillez specifier des arguments\n
-// 			\tUtilisation :\n
-// 			\t\t../lut [-p] [-a] [-e] [-o] source.lt\n
-//       \t\t\t[-p] affiche le code source reconnu\n
-//       \t\t\t[-a] analyse le programme de maniere statique\n
-//       \t\t\t[-e] execute interactivement le programme\n
-//       \t\t\t[-o] optimise les expressions et instructions");
-// 	} else if (argc == 1) {
-// 		cheminFichier = argv[0];
-// 		lexer.scannerFichier(cheminFichier)
-// 	}
-// }

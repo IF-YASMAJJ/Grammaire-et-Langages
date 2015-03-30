@@ -19,6 +19,7 @@ OperationAd::~OperationAd()
 OperationAd::operator std::string() const
 {
 	stringstream ss;
+
 	string exp;
 	if (m_expression != NULL)
 	{
@@ -28,6 +29,7 @@ OperationAd::operator std::string() const
 	{
 		exp = "";
 	}
+
 	string terme;
 	if (m_terme != NULL)
 	{
@@ -37,6 +39,7 @@ OperationAd::operator std::string() const
 	{
 		terme = "";
 	}
+
 	ss << exp << m_opA << terme;
 
 	return ss.str();
@@ -61,6 +64,7 @@ void OperationAd::remplirIdsExpression(vector<string> &ids){
 }
 
 int  OperationAd::calculer(Automate *automate){
+	//calcul récursif de la valeur de chaque composante
 	if (m_opA == "+")
 	{
 		return m_expression->calculer(automate) + m_terme->calculer(automate);
@@ -75,13 +79,15 @@ int  OperationAd::calculer(Automate *automate){
 int* OperationAd::evaluer(Automate *automate) {
 	int * e = m_expression->evaluer(automate);
 	int * t = m_terme->evaluer(automate);
-	if ((e == NULL) | (t == NULL))
+
+	
+	if ((e == NULL) | (t == NULL)) //une des deux composantes est inconnue
 	{
 		delete e;
 		delete t;
 		return NULL;
 	}
-	else
+	else //calcul du résultat de l'opération 
 	{
 		int * ret = new int();
 		if (m_opA == "+")
@@ -101,7 +107,7 @@ int* OperationAd::evaluer(Automate *automate) {
 
 Expression * OperationAd::transformer(Automate* automate)
 {
-	//test si l'expression peut êrte ramené à une constante
+	//test si l'expression peut être ramené à une constante
 	int * tmp = evaluer(automate);
 	if (tmp)
 	{
@@ -110,7 +116,7 @@ Expression * OperationAd::transformer(Automate* automate)
 		return ret;
 	}
 
-	//transformation des deux membre
+	//transformation des deux membres
 	Terme* t = (Terme*)m_terme->transformer(automate);
 	if (t)
 	{
@@ -126,6 +132,7 @@ Expression * OperationAd::transformer(Automate* automate)
 	}
 
 	//gestion de l'élément neutre;
+	//partie gauche
 	tmp = m_expression->evaluer(automate);
 	if (tmp)
 	{
@@ -139,6 +146,7 @@ Expression * OperationAd::transformer(Automate* automate)
 		delete tmp;
 	}
 
+	//partie droite
 	tmp = m_terme->evaluer(automate);
 	if (tmp)
 	{

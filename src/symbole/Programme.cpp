@@ -18,6 +18,7 @@ Programme::~Programme()
 Programme::operator std::string() const
 {
 	stringstream ss;
+
 	string dec;
 	if (m_blocDec != NULL)
 	{
@@ -27,6 +28,7 @@ Programme::operator std::string() const
 	{
 		dec = "";
 	}
+
 	string inst;
 	if (m_blocInst != NULL)
 	{
@@ -36,6 +38,7 @@ Programme::operator std::string() const
 	{
 		inst = "";
 	}
+
 	ss << dec << inst;
 	return ss.str();
 }
