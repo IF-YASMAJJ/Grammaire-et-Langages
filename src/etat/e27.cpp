@@ -21,7 +21,8 @@ void E27::transition(Automate* automate)
 		automate->arreter();
 		break;
 	default:
-		MessagesErreurs::ErreurSyntaxique(0, 0, ATTENDU_OPERATEUR);
+		MessagesErreurs::ErreurSyntaxique(ATTENDU_OPERATEUR);
+		automate->arreter();
         break;
 	}
 }

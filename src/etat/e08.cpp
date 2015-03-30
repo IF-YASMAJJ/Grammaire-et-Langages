@@ -31,6 +31,7 @@ void E08::transition(Automate* automate)
 		break;
 	default:
 		MessagesErreurs::Erreur("Opérateur '+'/'-' ou ';' attendu");
+		automate->arreter();
 		break;
 	}
 }

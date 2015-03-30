@@ -222,7 +222,9 @@ Symbole * Lexer::getNext(){
 								if(!isspace(carLu))
 								{
 									err_lexicale = true;
-									MessagesErreurs::ErreurLexicale(m_numLigne,m_numColonne,&carLu);
+//									string param;
+//									param.push_back(carLu);
+									MessagesErreurs::ErreurLexicale(m_numLigne,m_numColonne,carLu);
 
 								}else
 								 {

@@ -11,8 +11,13 @@
 #include "MessagesErreurs.h"
 #include "symbole/Programme.h"
 
+
 #include <vector>
 using namespace std;
+
+int Lexer::m_numLigne = 1;
+int Lexer::m_numColonne = 0;
+
 
 Automate::Automate()
 {
@@ -325,7 +330,7 @@ void Automate::transformer()
 	Symbole* s = m_pileSymbole.top();
 	if (*s == PROGRAMME)
 	{
-		//initialise la table des symboles 
+		//initialise la table des symboles
 		for (auto symbole = m_aSymboles.begin(); symbole != m_aSymboles.end(); symbole++)
 		{
 			if (!symbole->second->m_constante)

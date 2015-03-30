@@ -23,6 +23,7 @@ void E37::transition(Automate* automate)
 		break;
 	default:
 		MessagesErreurs::IdentificateurNonDeclare();
+		automate->arreter();
         break;
 	}
 }

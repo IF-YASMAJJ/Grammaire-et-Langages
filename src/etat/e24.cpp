@@ -31,6 +31,7 @@ void E24::transition(Automate* automate)
 	default:
 		MessagesErreurs::Erreur("un identificateur, un numérique est "
 								"attendu");
+		automate->arreter();
         break;
 	}
 }

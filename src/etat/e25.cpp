@@ -32,6 +32,7 @@ void E25::transition(Automate* automate)
 	default:
 		MessagesErreurs::Erreur("Opérateur '+'/'-' ou un symbole "
 								"')' est attendu");
+		automate->arreter();
         break;
 	}
 }

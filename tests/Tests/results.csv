@@ -1,5 +1,6 @@
 Test ID;Return code validation;Out result;StdErr result;File creation result;Global result
 01.NoArgument;Ok;Non testé;Ok;Non testé;Ok
+010.ErreurSyntaxique;Ok;Non testé;Echec;Non testé;Echec
 02.FichierInexistant;Ok;Non testé;Ok;Non testé;Ok
 03.FichierExistant;Ok;Non testé;Non testé;Non testé;Ok
 04.Affichage;Ok;Ok;Non testé;Non testé;Ok

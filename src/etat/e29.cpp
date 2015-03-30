@@ -30,7 +30,8 @@ void E29::transition(Automate* automate)
 		automate->arreter();
 		break;
 	default:
-		MessagesErreurs::ErreurSyntaxique(0, 0, ATTENDU_VIRGPOINTVIRG);
+		MessagesErreurs::ErreurSyntaxique(ATTENDU_VIRGPOINTVIRG);
+		automate->arreter();
         break;
 	}
 }

@@ -21,7 +21,8 @@ void E18::transition(Automate* automate)
 		automate->arreter();
 		break;
 	default:
-		MessagesErreurs::ErreurSyntaxique(0, 0, ATTENDU_VALEUR);
+		MessagesErreurs::ErreurSyntaxique(ATTENDU_VALEUR);
+		automate->arreter();
         break;
 	}
 }

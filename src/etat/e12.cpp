@@ -33,6 +33,7 @@ void E12::transition(Automate* automate)
 	default:
 		MessagesErreurs::Erreur("un identificateur, un numérique ou un symbole "
 						"'(' est attendu");
+		automate->arreter();
         break;
 	}
 }

@@ -4,6 +4,7 @@
 #include <string>
 #include <queue>
 #include <iostream>
+#include "Lexer.h"
 using namespace std;
 
 #define ATTENDU_VIRGPOINTVIRG 1
@@ -66,23 +67,24 @@ class MessagesErreurs
 			m_FileMessagesStatiques.push("la variable " + nomVariable + " n'a pas ete declaree.");
 		}
 
-		static void ErreurLexicale(int ligne, int colonne, string caractere){
-			cerr << "Erreur lexicale (" << std::to_string(ligne) << ":" << std::to_string(colonne) << ") caractere " << caractere<<endl;
+		static void ErreurLexicale(int ligne, int colonne, char caractere){
+			cerr << "Erreur lexicale (" << std::to_string(ligne) << ":" << std::to_string(colonne) << ") caractere " << caractere << endl;
 		}
 
-		static void ErreurSyntaxique(int ligne, int colonne, int nature){
+		static void ErreurSyntaxique(int nature){
+			int ligne = Lexer::getNumLigne(), colonne = Lexer::getNulColonne();
 			switch(nature){
 			case ATTENDU_VIRGPOINTVIRG:
-				m_FileMessagesStatiques.push("Erreur syntaxique (" + std::to_string(ligne) + ":" + std::to_string(colonne) + ") symbole , ou ; attendu");
+				cerr << "Erreur syntaxique (" << std::to_string(ligne) << ":" << std::to_string(colonne) << ") symbole , ou ; attendu" << endl;
 				return;
 			case ATTENDU_EGAL:
-				m_FileMessagesStatiques.push("Erreur syntaxique (" + std::to_string(ligne) + ":" + std::to_string(colonne) + ") symbole = attendu");
+				cerr << "Erreur syntaxique (" << std::to_string(ligne) << ":" << std::to_string(colonne) << ") symbole = attendu" << endl;
 				return;
 			case ATTENDU_VALEUR:
-				m_FileMessagesStatiques.push("Erreur syntaxique (" + std::to_string(ligne) + ":" + std::to_string(colonne) + ") valeur attendue");
+				cerr << "Erreur syntaxique (" << std::to_string(ligne) << ":" << std::to_string(colonne) << ") valeur attendue" << endl;
 				return;
 			case ATTENDU_OPERATEUR:
-				m_FileMessagesStatiques.push("Erreur syntaxique (" + std::to_string(ligne) + ":" + std::to_string(colonne) + ") operateur := attendu");
+				cerr << "Erreur syntaxique (" << std::to_string(ligne) << ":" << std::to_string(colonne) << ") operateur := attendu" << endl;
 				return;
 			}
 		}

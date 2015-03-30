@@ -18,6 +18,9 @@ class Lexer
 		Symbole *getNext();  // ???
 		Symbole *getCurrent();
 		int scannerFichier(string cheminFichier);
+
+		static int getNumLigne() {return m_numLigne;}
+		static int getNulColonne() {return m_numColonne;}
 	private:
 		stringstream m_ss;
 		string m_carLus;
@@ -25,8 +28,8 @@ class Lexer
 		boost::regex m_symbole;
 		boost::regex m_nb;
 		boost::regex m_id;
-		int m_numLigne;
-		int m_numColonne;
+		static int m_numLigne;
+		static int m_numColonne;
 };
 
 #endif // LEXER_H

@@ -7,6 +7,7 @@
 #include "e27.h"
 #include "../Automate.h"
 #include "../symbole/Programme.h"
+#include "../MessagesErreurs.h"
 
 E03::E03()
 {
@@ -29,7 +30,11 @@ void E03::transition(Automate* automate)
 	case ERREURLEXICALE:
 		automate->arreter();
 		break;
-	default:
+	case ENDOFFILE:
 		automate->reduction(new Programme(), 2);
+		break;
+	default:
+		MessagesErreurs::Erreur("Symbole inattendu");
+		automate->arreter();
     }
 }
